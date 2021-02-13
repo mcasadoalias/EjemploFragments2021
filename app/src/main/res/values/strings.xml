@@ -5,5 +5,7 @@
     <string name="testing_details_fragment">Testing details fragment</string>
     <string name="button1">Button 1</string>
     <string name="button2">Button 2</string>
-    <string name="initial_data">initial_data</string>
+    <string name="initial_data">This is just a string to show how you can pass a fragment some information in a bundle</string>
+    <string name="initial_data_key">initial_data_key</string>
+    <string name="detail_text">Detail text associated with\u0020</string>
 </resources>

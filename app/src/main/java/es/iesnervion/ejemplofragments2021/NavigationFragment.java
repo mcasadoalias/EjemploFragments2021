@@ -3,30 +3,33 @@ package es.iesnervion.ejemplofragments2021;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class NavigationFragment extends Fragment {
+public class NavigationFragment extends Fragment implements View.OnClickListener {
 
+    private Button btn1, btn2;
 
-
-
+    private MainViewModel vmodel;
 
     public NavigationFragment() {
-        // Required empty public constructor
-    }
 
+    }
 
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        vmodel = new ViewModelProvider(getActivity()).get(MainViewModel.class);
+
 
     }
 
@@ -34,13 +37,34 @@ public class NavigationFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
+        String initialData;
         TextView txtv_initial_data;
-        String initialData = requireArguments().getString(getResources().getString(R.string.initial_data));
+
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_navigation, container, false);
         txtv_initial_data = v.findViewById(R.id.initialData);
+
+        try {
+            initialData = requireArguments().getString(getResources().getString(R.string.initial_data_key));
+
+        } catch (IllegalStateException e){
+            initialData ="";
+        }
         txtv_initial_data.setText(initialData);
 
+
+        btn1 = v.findViewById(R.id.btn1);
+        btn2 = v.findViewById(R.id.btn2);
+        btn1.setOnClickListener(this);
+        btn2.setOnClickListener(this);
         return v;
+    }
+
+    @Override
+    public void onClick(View view) {
+
+        vmodel.setClickedBtn(view.getId());
+        vmodel.setDetailText(getResources().getString(R.string.detail_text)+((Button)view).getText().toString());
+
     }
 }
