@@ -29,15 +29,12 @@ public class NavigationFragment extends Fragment implements View.OnClickListener
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         vmodel = new ViewModelProvider(getActivity()).get(MainViewModel.class);
-
-
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        String initialData;
         TextView txtv_initial_data;
 
         // Inflate the layout for this fragment
@@ -45,13 +42,15 @@ public class NavigationFragment extends Fragment implements View.OnClickListener
         txtv_initial_data = v.findViewById(R.id.initialData);
 
         try {
-            initialData = requireArguments().getString(getResources().getString(R.string.initial_data_key));
+            // TODO We should persist this in the ViewModel in order to
+            //  survive after a config. change
+            vmodel.setInitialData (requireArguments().getString(getResources()
+                    .getString(R.string.initial_data_key)));
 
         } catch (IllegalStateException e){
-            initialData ="";
+                // If there are no arguments, we don't do anything
         }
-        txtv_initial_data.setText(initialData);
-
+        txtv_initial_data.setText(vmodel.getInitialData());
 
         btn1 = v.findViewById(R.id.btn1);
         btn2 = v.findViewById(R.id.btn2);

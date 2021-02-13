@@ -11,14 +11,7 @@ public class MainViewModel extends ViewModel {
     private MutableLiveData<Integer> clickedBtn = new MutableLiveData<Integer>();
     private ScreenSize screenSize = ScreenSize.UNKNOWN;
     private MutableLiveData<String> detailText = new MutableLiveData<String>();
-
-    public ScreenSize getScreenSize() {
-        return screenSize;
-    }
-
-    public void setScreenSize(ScreenSize screenSize) {
-        this.screenSize = screenSize;
-    }
+    private String initialData;
 
     public MutableLiveData<Integer> getClickedBtn() {
         return clickedBtn;
@@ -30,6 +23,14 @@ public class MainViewModel extends ViewModel {
 
     public void setClickedBtn(int id) {
         this.clickedBtn.setValue(id);
+    }
+
+    public ScreenSize getScreenSize() {
+        return screenSize;
+    }
+
+    public void setScreenSize(ScreenSize screenSize) {
+        this.screenSize = screenSize;
     }
 
     public MutableLiveData<String> getDetailText() {
@@ -48,4 +49,11 @@ public class MainViewModel extends ViewModel {
         this.detailText.setValue(text);
     }
 
+    public String getInitialData() {
+        return initialData;
+    }
+
+    public void setInitialData(String initialData) {
+        this.initialData = initialData;
+    }
 }

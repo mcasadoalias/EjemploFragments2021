@@ -22,40 +22,53 @@ public class MainActivity extends AppCompatActivity {
         vmodel.getClickedBtn().observe(this, new Observer<Integer>() {
             @Override
             public void onChanged(Integer id) {
-                switch (id){
-                    case R.id.btn1:
-                    case R.id.btn2:
-                        if (vmodel.getScreenSize()==ScreenSize.SMALL){
+                if (vmodel.getScreenSize()==ScreenSize.SMALL) {
+                    switch (id) {
+                        case R.id.btn1:
+                        case R.id.btn2:
                             getSupportFragmentManager().beginTransaction()
                                     .setReorderingAllowed(true)
                                     .replace(R.id.mainContainer, new DetailsFragment())
                                     .addToBackStack(null)
                                     .commit();
-                        }
-                        break;
+                            break;
                     /*case R.id.btn2:
                         if (vmodel.getScreenSize()==ScreenSize.SMALL){
 
                         }
                         break;*/
+                        // -1 means that the navigation  fragment is set
+                        case -1:
+                        default:
+                            getSupportFragmentManager().beginTransaction()
+                                    .setReorderingAllowed(true)
+                                    .replace(R.id.mainContainer, new NavigationFragment())
+                                    .addToBackStack(null)
+                                    .commit();
+                    }
                 }
-
             }
         });
 
         if (vmodel.getScreenSize()==ScreenSize.UNKNOWN){
             mainContainer = findViewById(R.id.mainContainer);
+            if (mainContainer!= null) {
+                vmodel.setScreenSize(ScreenSize.SMALL);
+            } else {
+                vmodel.setScreenSize(ScreenSize.BIG);
+            }
         }
 
 
         //If the layout that has been loaded is the one for small screens
         //and the activity has been created for the first time (no configuration changes)
-        if (mainContainer!=null && savedInstanceState==null) {
-            vmodel.setScreenSize(ScreenSize.SMALL);
+        if (vmodel.getScreenSize()==ScreenSize.SMALL && savedInstanceState==null) {
+
 
             initialData = new Bundle();
             initialData.putString(getResources().getString(R.string.initial_data_key),
-                                  getResources().getString(R.string.initial_data));
+                                  "JUST A TEST STRING PASSED AS AN ARGUMENT\n" +
+                                          " ONLY IN CASE OF SMALL SCREEN");
             getSupportFragmentManager().beginTransaction()
                     .setReorderingAllowed(true)
                     .add(R.id.mainContainer, NavigationFragment.class, initialData)
@@ -64,7 +77,12 @@ public class MainActivity extends AppCompatActivity {
 
         }
 
-        //TODO I have to keep active fragment visible (nav or details) when there is a
-        //   configuration change
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        // -1 means that the navigation fragment is set
+        vmodel.setClickedBtn(-1);
     }
 }
